@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hello World - Oracle Application Framework Exercise</title>
+    <link rel="stylesheet" type="text/css" href="css/common.css" />
+</head>
+<body>
+<div id="content">
+    <h2 id="step0">Hello World</h2>
+    <p>
+        完成本章练习后将对Oracle Application Framework的MVC的架构有一定了解, 对页面布局以及控制器Controller有了初步认识,
+        同时掌握调试OAF程序的技巧.
+    </p>
+    <br/><br/>
+
+    <!--Step 1-->
+    <h3 id="step1">Step 1. 创建OA Workspace</h3>
+    <hr />
+    <p>
+        菜单选择File->New，打开[New Gallery]对话框.
+    </p>
+    <img src="images/chp1/1_1.png" style="border:1px solid black;"><br/>
+    <p>
+        左边类型树选中General, 右部选中Workspace Configured for Oracle Application,
+        点击[OK]按钮, 此时弹出[New Oracle Application Workspace]对话框.
+    </p>
+    <img src="images/chp1/1_2.gif">
+    <p>
+        输入名称并确保目录位置为<span class="code">&lt;JDEV_USER_HOME&gt;\myprojects</span>,
+        点击[OK]按钮完成Workspace的创建.此时若选中[Add a New OA Project]复选框, 则将打开新建OA Project向导.
+    </p>
+    <img src="images/chp1/1_3.gif">
+
+    <!--Step 2-->
+    <h3 id="step2">Step 2. 创建OA Project</h3>
+    <hr />
+    <p>
+        在项目树种右键OA Workspace, 在弹出的上下文菜单中选择[New OA Project]选项, 将打开新建OA Project向导.
+        如果出现欢迎页, 则直接点击[Next]跳过.
+    </p>
+    <img src="images/chp1/1_4.png" style="border:1px solid black;">
+    <p>
+        在向导[step 1 of 3]画面, 输入项目名称、存放地址已经包名, 点击[Next]按钮进入下一步.
+    </p>
+    <img src="images/chp1/1_5.gif">
+    <p>
+        在向导[step 2 of 3]画面, 如需要指定数据库连接, 则可以通过[Repository]下拉框选择在[Connections]中
+        已经设定的连接.
+    </p>
+    <img src="images/chp1/1_6.gif">
+    <p>
+        此时也可对连接进行编辑和测试连通状况.
+    </p>
+    <img src="images/chp1/1_7.png" style="border:1px solid black;">
+    <p>
+        在向导[step 3 of 3]画面, 指定数据库运行时连接, 选择DBC文件, 输入数据库用户名/密码, 并指定开发职责后,
+        点击[完成]按钮完成OA Project的创建.
+    </p>
+    <img src="images/chp1/1_8.png" style="border:1px solid black;">
+
+    <!--Step 3-->
+    <h3 id="step3">Step 3. 设置运行时选项</h3>
+    <hr />
+    <p>
+        双击项目目录结构中的Project节点或者右键Project节点选择[Project Properties]选项,
+        打开[Project Properties]对话框.
+    </p>
+    <img src="images/chp1/1_9.png" style="border:1px solid black;">
+    <p>
+        对话框左侧选项树中选中Oracle Applications->Run Options节点, 在右侧确保将[OADevelperMode]、[OADiagnostic]
+        两个选项加入到[Selected Options], 点击[确定]按钮进行保存.
+    </p>
+    <img src="images/chp1/1_10.gif">
+
+    <!--Step 4-->
+    <h3 id="step4">Step 4. 创建Page</h3>
+    <hr />
+    <p>
+        右键项目目录结构中的Project节点, 点击上下文菜单中New选项, 打开[New Gallery]对话框.
+    </p>
+    <img src="images/chp1/1_11.gif" style="border:1px solid black;">
+    <p>
+        对话框左侧选项树中选中Web Tier->OA Components节点, 在右侧选中[Page]选项, 点击[OK]按钮.
+    </p>
+    <img src="images/chp1/1_12.gif">
+    <p>
+        [New Page]对话框中输入页面名称和package后点击[确定]按钮完成Page的创建.
+    </p>
+    <img src="images/chp1/1_13.png" style="border:1px solid black;">
+    <p>
+        项目目录结构中选中Page, 可以在Structure窗口看到页面元素的层次结构.
+    </p>
+    <img src="images/chp1/1_14.gif">
+
+    <!--Step 5-->
+    <h3 id="step5">Step 5. 修改Page Layout(顶层)Region</h3>
+    <hr />
+    <p>
+        选中Page, 在Structure窗口中选中自动创建的region1节点, 属性窗口会显示该Region的属性设定.
+        如果当前IDE没有打开属性窗口, 请选择菜单View->Property Inspector选项打开属性窗口.
+    </p>
+    <img src="images/chp1/1_15.gif">
+    <p>
+        在属性窗口对region1进行如下调整:
+        <ul class="itemList">
+            <li>将ID属性设置为PageLayoutRN.</li>
+            <li>确保Region Style属性值为pageLayout.</li>
+            <li>确保Form属性值为True.</li>
+            <li>确保Auto Footer属性值为True.</li>
+            <li>将Window Title属性设置为&lt;your name&gt;: Hello World Window Title. </li>
+            <li>将Title属性设置为&lt;your name&gt;: Hello World Page Header.</li>
+            <li>设置AM Definition属性为oracle.apps.fnd.framework.server.OAApplicationModule(通用OAF Application Module)</li>
+        </ul>
+    </p>
+    <img src="images/chp1/1_16.gif">
+
+    <!--Step 6-->
+    <h3 id="step6">Step 6. 创建Region</h3>
+    <hr />
+    <p>
+        继续在Structure窗口右键PageLayoutRN, 在上下文菜单中选择New->Region, 在PageLayoutRN下创建一个自动命名为region1的Region.
+    </p>
+    <img src="images/chp1/1_17.gif">
+    <p>
+        选中region1, 在属性窗口对region1进行如下调整:
+    <ul class="itemList">
+        <li>将ID属性设置为MainRN.</li>
+        <li>将Region Style属性设置为messageComponentLayout.</li>
+    </ul>
+    </p>
+    <img src="images/chp1/1_18.gif">
+
+    <!--Step 7-->
+    <h3 id="step7">Step 7. 创建Item(输入框)</h3>
+    <hr />
+    <p>
+        继续在Structure窗口右键MainRN, 在上下文菜单中选择New->messageTextInput, 在MainRN下创建
+        一个文本输入框item1.
+    </p>
+    <img src="images/chp1/1_19.gif">
+    <p>
+        选中item1, 在属性窗口对其进行如下调整:
+    <ul class="itemList">
+        <li>设置ID属性为HelloName.</li>
+        <li>确保Item Style属性值为messageTextInput.</li>
+        <li>设置Prompt属性为Name.</li>
+        <li>设置Visual Length为20.</li>
+        <li>设置Data Maximum Length属性为50.</li>
+    </ul>
+    </p>
+    <img src="images/chp1/1_20.gif">
+
+    <!--Step 8-->
+    <h3 id="step8">Step 8. 为按钮创建容器Region</h3>
+    <hr />
+    <p>
+        继续在Structure窗口右键MainRN, 在上下文菜单中选择New->messageLayout, 在MainRN下创建
+        一个容器messageLayout1.
+    </p>
+    <img src="images/chp1/1_21.gif">
+    <p>
+        选中messageLayout1, 在属性窗口将其ID属性设定为ButtonLayout.
+    </p>
+    <img src="images/chp1/1_22.gif">
+
+    <!--Step 9-->
+    <h3 id="step9">Step 9. 创建Item(按钮)</h3>
+    <hr />
+    <p>
+        继续在Structure窗口右键ButtonLayout, 在上下文菜单中选择New->Item, 在ButtonLayout下创建
+        一个Item, 自动命名为item1.
+    </p>
+    <img src="images/chp1/1_23.png" style="border:1px solid black;">
+    <p>
+        选中item1, 在属性窗口对其进行如下调整:
+    <ul class="itemList">
+        <li>设置ID属性为Go.</li>
+        <li>设置Item Style属性为submitButton.</li>
+        <li>设置Attribute Set属性为/oracle/apps/fnd/attributesets/Buttons/Go.</li>
+    </ul>
+    </p>
+    <img src="images/chp1/1_24.gif">
+
+    <!--Step 10-->
+    <h3 id="step10">Step 10. 运行页面</h3>
+    <hr />
+    <p>
+        右键页面文件, 上下文菜单中选择Run选项, 运行页面.
+    </p>
+    <img src="images/chp1/1_25.png" style="border:1px solid black;">
+    <p>
+        不出意外此时浏览器中应该可以看到如下画面.
+    </p>
+    <img src="images/chp1/1_26.png" style="border:1px solid black;">
+
+    <!--Step 11-->
+    <h3 id="step11">Step 11. 添加Controller</h3>
+    <hr />
+    <p>
+        在Structure窗口右键MainRN, 上下文菜单选择Set New Controller选项, 打开[New Controller]对话框.
+    </p>
+    <img src="images/chp1/1_27.gif">
+    <p>
+        在[New Controller]对话框输入Controller的名称和包, 点击[OK]按钮完成Controller创建.
+    </p>
+    <img src="images/chp1/1_28.gif">
+
+    <!--Step 12-->
+    <h3 id="step12">Step 12. 为Controller添加控制逻辑</h3>
+    <hr />
+    <p>
+        在项目目录结构窗口找到并双击打开我们创建的Controller的Java文件.
+    </p>
+    <img src="images/chp1/1_29.gif">
+    <p>
+        在代码开头引入我们需要的以下包:<br/>
+        <pre class="code">import oracle.apps.fnd.framework.OAException;</pre>
+    </p>
+    <img src="images/chp1/1_30.png" >
+    <p>
+        为processFormRequest方法添加以下代码逻辑:<br/>
+        <pre class="code">
+if (pageContext.getParameter("Go") != null) {
+    String userContent = pageContext.getParameter("HelloName");
+    String message = "Hello, " + userContent + "!";
+    throw new OAException(message, OAException.INFORMATION);
+}
+        </pre>
+    </p>
+    <img src="images/chp1/1_31.png" style="border:1px solid black;">
+
+    <!--Step 13-->
+    <h3 id="step13">Step 13. 运行最终页面</h3>
+    <hr />
+    <p>
+        右键页面文件, 上下文菜单中选择Run选项, 运行页面.
+    </p>
+    <img src="images/chp1/1_25.png" style="border:1px solid black;">
+    <p>
+        在文本框中任意输入, 点击[GO]按钮, 看下运行结果.
+    </p>
+    <img src="images/chp1/1_32.png" style="border:1px solid black;">
+
+    <!--Step 14-->
+    <h3 id="step14">Step 14. 使用Debugger进行调试</h3>
+    <hr />
+    <p>
+        如果此时你的代码没有显示行号, 可以在代码窗口左侧右击鼠标弹出上下文菜单, 选择[Toggle Line Numbers]选项来显示行号.
+    </p>
+    <img src="images/chp1/1_33.gif">
+    <p>
+        试着在以下代码所在行的最左侧进行鼠标左键点击, 为该句代码添加调试断点.
+        <pre class="code">if (pageContext.getParameter("Go") != null)</pre>
+    </p>
+    <img src="images/chp1/1_34.gif">
+    <p>
+        右键页面文件, 上下文菜单中选择Debug选项, 开始运行并调试页面.
+    </p>
+    <img src="images/chp1/1_34.png" style="border:1px solid black;">
+    <p>
+        在页面点击[GO]按钮后, 代码会在我们下的断点处停止.
+    </p>
+    <img src="images/chp1/1_35.gif">
+    <p>
+        在工具栏点击[Step Over]按钮或直接按键盘F8, 进行单步调试, 直到以下代码行:
+        <pre class="code">String userContent = pageContext.getParameter("HelloName");</pre>
+    </p>
+    <img src="images/chp1/1_36.gif">
+    <img src="images/chp1/1_37.gif">
+    <p>
+        不断进行单步调试, 可以在[Smart Data]页监控变量值的变化:
+    </p>
+    <img src="images/chp1/1_38.gif">
+</div>
+<div id="floatPanel">
+    <a href="#step0"><div id="panelTop"></div></a>
+    <a href="index.html"><div id="panelReturn"></div></a>
+</div>
+</body>
+</html>
