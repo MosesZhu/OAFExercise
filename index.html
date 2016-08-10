@@ -4,14 +4,30 @@
     <meta charset="UTF-8">
     <title>Summary - Oracle Application Framework Exercise</title>
     <link rel="stylesheet" type="text/css" href="css/common.css" />
+    <script type="text/javascript" src="js/jquery-3.1.0.min.js" ></script>
+    <script type="text/javascript" src="js/jquery.rotate.js" ></script>
+    <script>
+        $(function() {
+            $(".treeNodeTriggle").on("click", function (e) {
+                var $subTree = $(this).parent().next();
+                if($subTree.is(":hidden")) {
+                    $subTree.show(500);
+                    $(this).animate({rotate: '90'}, 300, null);
+                } else {
+                    $subTree.hide(500);
+                    $(this).animate({rotate: '0'}, 300, null);
+                }
+            });
+        });
+    </script>
 </head>
 <body>
     <div id="content">
         <h2>Topic List</h2>
         <ul class="topicTree">
-            <li><a href="hello.html">Hello World</a></li>
-            <li class="subTreeNode">
-                <ul>
+            <li><img src="css\images\triggle_to_right.png" class="treeNodeTriggle" ><a href="hello.html">Hello World</a></li>
+            <li class="subTreeNode" style="display: none;">
+                <ul class="subTree">
                     <li><a href="hello.html#step1">创建OA Workspace</a></li>
                     <li><a href="hello.html#step2">创建OA Project</a></li>
                     <li><a href="hello.html#step3">设置运行时选项</a></li>
@@ -28,7 +44,18 @@
                     <li><a href="hello.html#step14">使用Debugger进行调试</a></li>
                 </ul>
             </li>
-            <li><a href="hello.html">Search</a></li>
+            <li><img src="css\images\triggle_to_right.png" class="treeNodeTriggle" ><a href="search.html">Search</a></li>
+            <li class="subTreeNode" style="display: none;">
+                <ul class="subTree">
+                    <li><a href="search.html#step1">创建Application Module (AM)</a></li>
+                    <li><a href="search.html#step2">创建Employee Entity Object (EO)</a></li>
+                    <li><a href="search.html#step3">创建Employee-to-Manager Association (AO)</a>
+                    <li><a href="search.html#step4">创建EmployeeSummaryVO View Object (VO)</a>
+                    <li><a href="search.html#step5">将VO加入到AM</a>
+                    <li><a href="search.html#step6">创建EmpSearchPG页面</a>
+                    <li><a href="search.html#step7">创建基于结果的基本查询</a>
+                </ul>
+            </li>
             <li><a href="hello.html">Create</a></li>
             <li><a href="hello.html">Update</a></li>
             <li><a href="hello.html">Delete</a></li>

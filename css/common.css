@@ -82,3 +82,26 @@ hr {
     font-family: "Courier New", "Courier", "monospace";
     color: #336699;
 }
+
+.input {
+    font-weight: bold;
+    font-style: italic;
+}
+
+.topicTree li {
+    list-style-type: none;
+}
+
+.subTree li {
+    list-style-type: circle;
+}
+
+.treeNodeTriggle {
+    width:12px;
+    height:12px;
+    margin-right:15px;
+}
+
+.treeNodeTriggle:hover {
+    cursor: pointer;
+}

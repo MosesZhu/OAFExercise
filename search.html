@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Search - Oracle Application Framework Exercise</title>
+    <link rel="stylesheet" type="text/css" href="css/common.css" />
+</head>
+<body>
+<div id="content">
+    <h2 id="step0">Search</h2>
+    <p>
+        完成本章练习后将掌握Oracle Application Framework中基本查询技巧.
+    </p>
+    <br/><br/>
+
+    <!--Step 1-->
+    <h3 id="step1">Step 1. 创建Application Module (AM)</h3>
+    <hr />
+    <p>
+        在项目目录结构中右键点击Project节点, 在弹出的上下文菜单中选择New选项, 弹出[New Gallery]对话框.
+    </p>
+    <img src="images/chp2/2_1.png" style="border:1px solid black;"><br/>
+    <p>
+        左边类型树选中Business Tier->ADF Business Components, 右部选中Application Module,
+        点击[OK]按钮, 此时弹出[Create Application Module]向导对话框.
+    </p>
+    <img src="images/chp2/2_2.png">
+    <p>
+        在[Step 1 of 4]画面: <br />
+        Package输入<span class="input">&lt;your_name&gt;.oracle.apps.ak.employee.server</span>, <br />
+        Name输入<span class="input">EmployeeAM</span>, <br />
+        点击[下一步]按钮直到[Step 4 of 4]画面.
+    </p>
+    <img src="images/chp2/2_3.png">
+    <p>
+        确保选中了<span class="input">Generate Java File(s)</span>复选框, 点击[完成]按钮完成AM的创建.
+    </p>
+    <img src="images/chp2/2_4.png">
+    <p>
+        在项目目录结构中双击我们新建的EmployeeAM, 打开[Application Module Editor]对话框, 选中Custom Properties节点,
+        <br />右侧Name设为<span class="input">RETENTION_LEVEL</span>,
+        <br />Value设为<span class="input">MANAGE_STATE</span>,
+        <br />点击[Add]按钮添加属性, 按[确定]按钮保存修改, 为AM启用了钝化.
+    </p>
+    <img src="images/chp2/2_5.png">
+
+    <!--Step 2-->
+    <h3 id="step2">Step 2. 创建Employee Entity Object (EO)</h3>
+    <hr />
+    <p>
+        我们将为表FWK_TBX_EMPLOYEES创建Entity Object, 表关系图如下.
+    </p>
+    <img src="images/chp2/2_5.gif" style="border:1px solid black;"><br/>
+    <p>
+        在项目目录结构中右键<span class="input">&lt;your_name&gt;.oracle.apps.ak.schema.server</span>包节点,
+        在弹出的上下文菜单中选择New Entity Object选项, 弹出[Create Entity Object]对话框.
+    </p>
+    <img src="images/chp2/2_6.png" style="border:1px solid black;"><br/>
+    <p>
+        在[Step 1 of 5]画面: <br />
+        Name输入<span class="input">EmployeeEO</span>, <br />
+        Package输入<span class="input">&lt;your_name&gt;.oracle.apps.ak.schema.server</span>, <br />
+        Schema Object输入<span class="input">FWK_TBX_EMPLOYEES</span>, <br />
+        选中<span class="input">Tables</span>和<span class="input">Synonyms</span>复选框, <br />
+        点击[下一步]按钮.
+    </p>
+    <img src="images/chp2/2_7.png" style="border:1px solid black;"><br/>
+    <p>
+        在[Step 2 of 5]画面, Entity Attributes会列出FWK_TBX_EMPLOYEES表中的所有字段, 如果没有, 则点击[New From Table]按钮,
+        在打开的[Create New Entity Attributes for Columns]窗口中, 选中所有的栏位将其加入到Selected列表.
+        点击[下一步]按钮.
+    </p>
+    <img src="images/chp2/2_8.png"><br/>
+    <img src="images/chp2/2_9.png"><br/>
+    <p>
+        在[Step 3 of 5]画面, 确保EmployeeId属性的Primary Key复选框被选中, 点击[下一步]按钮.
+    </p>
+    <img src="images/chp2/2_10.png"><br/>
+    <p>
+        在[Step 4 of 5]画面, 选中Entity Object Class: EmployeeEOImpl下的<span class="input">Generate Java File</span>复选框,
+        在[Generate Methods]区域, 选中
+        <span class="input">Accessors</span>, <span class="input">Create Method</span>,
+        <span class="input">Validation Method</span> 和 <span class="input">Remove Method</span> 复选框.
+        点击[下一步]按钮.
+    </p>
+    <img src="images/chp2/2_11.png"><br/>
+    <p>
+        在[Step 5 of 5]画面, 确保没有选中Generate Default View Object复选框,
+        点击[完成]按钮, 完成EO的创建.
+    </p>
+    <img src="images/chp2/2_12.png"><br/>
+
+    <!--Step 3-->
+    <h3 id="step3">Step 3. 创建Employee-to-Manager Association (AO)</h3>
+    <hr />
+    <p>
+        每一个Employee与他的Manager关系也维护在FWK_TBX_EMPLOYEES表中, 符合以下业务规则:
+        <ul class="itemList">
+            <li>每一个Employee必须要有一个Manager, 除非他的POSITION_CODE != "PRESIDENT".</li>
+            <li>每一个Employee至多只能关联一个Manager.</li>
+            <li>每一个Manager可以关联多个Employee.</li>
+        </ul>
+    </p>
+    <img src="images/chp2/2_13.gif" style="border:1px solid black;"><br/>
+    <p>
+        在项目目录结构中右键点击Project节点, 在弹出的上下文菜单中选择New选项, 弹出[New Gallery]对话框.
+        左边类型树选中Business Tier->ADF Business Components, 右部选中Association,
+        点击[OK]按钮, 此时弹出[Create Association]向导对话框.
+    </p>
+    <img src="images/chp2/2_14.png">
+    <p>
+        在[Step 1 of 4]画面: <br />
+        Package输入<span class="input">&lt;your_name&gt;.oracle.apps.ak.schema.server</span>, <br />
+        Name输入<span class="input">EmpToMgrAO</span>, <br />
+        点击[下一步]按钮.
+    </p>
+    <img src="images/chp2/2_15.png">
+    <p>
+        在[Step 2 of 4]画面: <br />
+        Cardinality下拉框选择<span class="input"> * to 0..1</span>, <br />
+        Select Source Attribute和Select Destination Attribute中都展开<span class="input">&lt;your_name&gt;.oracle.apps.ak.schema.server.EmployeeEO</span>, <br />
+        Select Source Attribute选中EmployeeEO下的ManagerId属性, <br />
+        Select Destination Attribute选中EmployeeEO下的EmployeeId属性, <br/>
+        点击[Add]按钮进行关系的添加. <br />
+        点击[下一步]按钮直到[Step 4 of 4]画面.
+    </p>
+    <img src="images/chp2/2_16.png">
+    <p>
+        在[Step 4 of 4]画面, 确保两个Expose Accessor复选框都被选中. 点击[完成]按钮完成AO的创建.
+    </p>
+    <img src="images/chp2/2_17.png">
+
+    <!--Step 4-->
+    <h3 id="step4">Step 4. 创建EmployeeSummaryVO View Object (VO)</h3>
+    <hr />
+    <p>
+        在项目目录结构中右键点击Project节点, 在弹出的上下文菜单中选择New选项, 弹出[New Gallery]对话框.
+        左边类型树选中Business Tier->ADF Business Components, 右部选中View Object,
+        点击[OK]按钮, 此时弹出[Create New View Object]向导对话框.<br />
+        在[Step 1 of 8]画面: <br />
+        Name输入<span class="input">EmployeeSummaryVO</span>, <br />
+        Package输入<span class="input">&lt;your_name&gt;.oracle.apps.ak.employee.server</span>, <br />
+        点击[下一步]按钮.
+    </p>
+    <img src="images/chp2/2_18.png" style="border:1px solid black;"><br/>
+    <p>
+        在[Step 2 of 8]画面: <br />
+        在Available树中找到并选中我们创建的EmployeeEO, 点击两次[>]按钮进行添加.<br />
+        选中第二个EmployeeEO1, 设置Association End为<span class="input">ManagerIdEmployeeEO</span>, <br />
+        点击[下一步]按钮.
+    </p>
+    <img src="images/chp2/2_19.png" style="border:1px solid black;">
+    <p>
+        在[Step 3 of 8]画面: <br />
+        将Available树中的以下节点添加到右侧Selected中: <br/>
+        EmployeeEO下
+        <ul class="itemList">
+            <li>EmployeeId</li>
+            <li>FullName</li>
+            <li>EmailAddress</li>
+        </ul>
+        EmployeeEO1下
+        <ul class="itemList">
+            <li>EmployeeId</li>
+            <li>FullName</li>
+            <li>EmailAddress</li>
+        </ul>
+        点击[下一步]按钮.
+    </p>
+    <img src="images/chp2/2_20.png" style="border:1px solid black;">
+    <p>
+        在[Step 4 of 8]画面进行如下操作: <br />
+        Attribute Settings选择FullName, Name改为<span class="input">EmployeeName</span>, Query Column Alias改为<span class="input">EMPLOYEE_NAME</span>, <br />
+        Attribute Settings选择EmployeeId1, Name改为<span class="input">ManagerId</span>, Query Column Alias改为<span class="input">MANAGER_ID</span>, <br />
+        Attribute Settings选择EmailAddress, Name改为<span class="input">EmployeeEmail</span>, Query Column Alias改为<span class="input">EMPLOYEE_EMAIL</span>, <br />
+        Attribute Settings选择FullName1, Name改为<span class="input">ManagerName</span>, Query Column Alias改为<span class="input">MANAGER_NAME</span>, <br />
+        Attribute Settings选择EmailAddress1, Name改为<span class="input">ManagerEmail</span>, Query Column Alias改为<span class="input">MANAGER_EMAIL</span>, <br />
+        点击[下一步]按钮.
+    </p>
+    <img src="images/chp2/2_21.png" style="border:1px solid black;">
+    <p>
+        在[Step 5 of 8]画面, 选中<span class="input">Expert Mode</span>复选框,  <br />
+        Query Statement中改为以下SQL:<br />
+        <pre class="code">
+    SELECT EmployeeEO.EMPLOYEE_ID,
+           EmployeeEO.FULL_NAME AS EMPLOYEE_NAME,
+           EmployeeEO.EMAIL_ADDRESS AS EMPLOYEE_EMAIL,
+           EmployeeEO1.EMPLOYEE_ID AS MANAGER_ID,
+           EmployeeEO1.FULL_NAME AS MANAGER_NAME,
+           EmployeeEO1.EMAIL_ADDRESS AS MANAGER_EMAIL,
+           flkp.meaning AS POSITION_DISPLAY
+    FROM FWK_TBX_EMPLOYEES EmployeeEO,
+         FWK_TBX_EMPLOYEES EmployeeEO1,
+         FWK_TBX_LOOKUP_CODES_VL flkp
+    WHERE EmployeeEO.MANAGER_ID = EmployeeEO1.EMPLOYEE_ID (+)
+      and EmployeeEO.POSITION_CODE = flkp.lookup_code
+      and flkp.lookup_type = 'FWK_TBX_POSITIONS'
+        </pre>
+        点击[下一步]按钮.
+    </p>
+    <img src="images/chp2/2_22.png" style="border:1px solid black;">
+    <p>
+        在[Step 8 of 8]画面, 取消选中View Object Class: EmployeeSummaryVOImpl下的<span class="input">Generate Java File</span>复选框,
+        选中View Row Class: EmployeeSummaryVORowImpl下的<span class="input">Generate Java File</span>复选框.
+        点击[完成]按钮, 完成VO的创建.
+    </p>
+    <img src="images/chp2/2_23.png" style="border:1px solid black;">
+
+    <!--Step 5-->
+    <h3 id="step5">Step 5. 将VO加入到AM</h3>
+    <hr />
+    <p>
+        在项目目录结构中双击EmployeeAM, 在打开的[Application Module Editor]对话框中, 左侧选项树中选中[Data Model]节点,
+        在右侧将我们刚创建的EmployeeSummaryVO加入到Data Model中.
+    </p>
+    <img src="images/chp2/2_24.png" style="border:1px solid black;">
+
+    <!--Step 6-->
+    <h3 id="step6">Step 6. 创建EmpSearchPG页面</h3>
+    <hr />
+    <p>
+        右键项目目录结构中的Project节点, 点击上下文菜单中New选项, 打开[New Gallery]对话框.
+        对话框左侧选项树中选中Web Tier->OA Components节点, 在右侧选中[Page]选项, 点击[OK]按钮打开[New Page]对话框. <br />
+        Name输入<span class="input">EmpSearchPG</span>, <br />
+        Package输入<span class="input">&lt;your_name&gt;.oracle.apps.ak.employee.webui</span>, <br />
+        点击[确定]按钮完成页面创建.
+    </p>
+    <img src="images/chp2/2_25.png" style="border:1px solid black;">
+    <p>
+        选中Page, 在Structure窗口中选中自动创建的region1节点, 属性窗口会显示该Region的属性设定.
+        如果当前IDE没有打开属性窗口, 请选择菜单View->Property Inspector选项打开属性窗口.
+        在属性窗口对region1进行如下调整:
+        <table width="779" border="1" cellpadding="2" cellspacing="2" bordercolor="#cccc99">
+            <tbody>
+            <tr bgcolor="#cccc99">
+                <td width="14%"><strong>Property</strong></td>
+                <td width="86%"><strong>Value</strong></td>
+            </tr>
+            <tr valign="top" bgcolor="#f7f7e7">
+                <td width="14%">ID</td>
+                <td width="86%">PageLayoutRN</td>
+            </tr>
+            <tr valign="top" bgcolor="#f7f7e7">
+                <td width="14%">Region Style </td>
+                <td width="86%">pageLayout</td>
+            </tr>
+            <tr valign="top" bgcolor="#f7f7e7">
+                <td width="14%">AM Definition</td>
+                <td width="86%">&lt;<em>yourname</em>&gt;.oracle.apps.ak.employee.server.EmployeeAM</td>
+            </tr>
+            <tr valign="top" bgcolor="#f7f7e7">
+                <td width="14%">Window Title </td>
+                <td width="86%" nowrap="">Framework Toolbox Tutorial: Labs
+                    &lt;<em>your name</em>&gt;</td>
+            </tr>
+            <tr valign="top" bgcolor="#f7f7e7">
+                <td width="14%" height="5">Title</td>
+                <td width="86%" height="5">Employees &lt;<em>your name</em>&gt;</td>
+            </tr>
+            <tr valign="top" bgcolor="#f7f7e7">
+                <td width="14%" height="78">AutoFooter</td>
+                <td width="86%" height="78">
+                    <p>True </p>
+                    <p>(<i>This ensures that the standard footer, including the
+                        Oracle copyright and privacy notice, render in the page</i>).</p>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    </p>
+    <img src="images/chp2/2_26.gif">
+    <p>
+        在Structure窗口中选中PageLayoutRN节点, 右键并选择[New]->[productBranding]选项, 在pageLayoutComponents下自动创建productBranding节点并
+        包含一个名为item1的image节点.
+    </p>
+    <img src="images/chp2/2_27.png" style="border:1px solid black;"> <br />
+    <img src="images/chp2/2_28.png" style="border:1px solid black;">
+    <p>
+        在Structure窗口中选中item1, 对其属性进行如下设置:
+        <table width="50%" border="1" cellpadding="2" cellspacing="2" bordercolor="#cccc99">
+            <tbody>
+            <tr bgcolor="#cccc99">
+                <td width="36%"><strong>Property</strong></td>
+                <td width="64%"><strong>Value</strong></td>
+            </tr>
+            <tr valign="top" bgcolor="#f7f7e7">
+                <td width="36%">ID</td>
+                <td width="64%">ProdBrand</td>
+            </tr>
+            <tr valign="top" bgcolor="#f7f7e7">
+                <td width="36%" height="25">Image URI</td>
+                <td width="64%" height="25">FNDTAPPBRAND.gif</td>
+            </tr>
+            <tr valign="top" bgcolor="#f7f7e7">
+                <td width="36%" height="25">Additional Text</td>
+                <td width="64%" height="25">
+                    <p>OA Framework Toolbox Tutorial<br>
+                    </p>
+                    <p><em>(This is required per the <a href="../../../../devguide/cs/cs_viewgeneral.htm#508">accessibility coding standards</a>
+                    with which all Oracle E-Business Suite pages must comply).</em></p>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </p>
+    <p>
+        在Structure窗口中选中PageLayoutRN节点, 右键并选择[New]->[pageStatus]选项,
+        在pageLayoutComponents下自动创建pageStatus节点并包含一个名为region1的flowLayout节点, 将其ID属性
+        设置为<span class="input">PageStatusRN</span>.
+    </p>
+    <img src="images/chp2/2_29.png" style="border:1px solid black;"> <br />
+    <img src="images/chp2/2_30.png" style="border:1px solid black;">
+    <p>
+        在Structure窗口中选中PageStatusRN节点, 右键并选择[New]->[item]选项新建一个名为item1的节点.
+    </p>
+    <img src="images/chp2/2_31.png" style="border:1px solid black;">
+    <p>
+        选中item1节点, 对其属性进行如下设置:
+        <table border="1" cellpadding="2" cellspacing="2" bordercolor="#cccc99">
+            <tbody>
+            <tr bgcolor="#cccc99">
+                <td width="34%" nowrap=""><strong>Property</strong></td>
+                <td width="66%" nowrap=""><strong>Value</strong></td>
+            </tr>
+            <tr valign="top" bgcolor="#f7f7e7">
+                <td width="34%" nowrap="">ID</td>
+                <td width="66%" nowrap="">PageHelp</td>
+            </tr>
+            <tr valign="top" bgcolor="#f7f7e7">
+                <td width="34%" nowrap="">Item Style</td>
+                <td width="66%" nowrap="">staticStyledText</td>
+            </tr>
+            <tr valign="top" bgcolor="#f7f7e7">
+                <td width="34%" nowrap="">Data Type </td>
+                <td width="66%" nowrap="">VARCHAR2</td>
+            </tr>
+            <tr valign="top" bgcolor="#f7f7e7">
+                <td width="34%" nowrap="">CSS Class</td>
+                <td width="66%" nowrap="">OraInstructionText</td>
+            </tr>
+            <tr valign="top" bgcolor="#f7f7e7">
+                <td width="34%" nowrap="">Message Appl Short Name</td>
+                <td width="66%" nowrap="">AK</td>
+            </tr>
+            <tr valign="top" bgcolor="#f7f7e7">
+                <td width="34%" nowrap="">Message Name</td>
+                <td width="66%" nowrap="">FWK_TBX_T_PAGE_GENERAL</td>
+            </tr>
+            </tbody>
+        </table>
+    </p>
+
+    <!--Step 7-->
+    <h3 id="step7">Step 7. 创建基于结果的基本查询</h3>
+    <hr />
+    <p>
+        在Structure窗口中选中PageLayoutRN节点, 右键并选择[New]->[Region]选项新建一个名为region1的节点.
+    </p>
+    <img src="images/chp2/2_32.png" style="border:1px solid black;">
+    <p>
+        选中region1节点, 对其属性进行如下设置:
+        <table width="41%" border="1" cellpadding="2" cellspacing="2" bordercolor="#cccc99">
+            <tbody>
+            <tr bgcolor="#cccc99">
+                <td width="60%"><strong>Property</strong></td>
+                <td width="40%"><strong>Value</strong></td>
+            </tr>
+            <tr valign="top" bgcolor="#f7f7e7">
+                <td width="60%">ID</td>
+                <td width="40%">QueryRN</td>
+            </tr>
+            <tr valign="top" bgcolor="#f7f7e7">
+                <td width="60%">Region Style </td>
+                <td width="40%">query</td>
+            </tr>
+            <tr valign="top" bgcolor="#f7f7e7">
+                <td width="60%" height="25">Construction Mode</td>
+                <td width="40%" height="25">resultsBasedSearch</td>
+            </tr>
+            <tr valign="top" bgcolor="#f7f7e7">
+                <td width="60%" height="25">Include Simple Panel</td>
+                <td width="40%" height="25">True</td>
+            </tr>
+            <tr valign="top" bgcolor="#f7f7e7">
+                <td width="60%" height="25">Include Views Panel</td>
+                <td width="40%" height="25">True</td>
+            </tr>
+            <tr valign="top" bgcolor="#f7f7e7">
+                <td width="60%" height="25">Include Advanced Panel</td>
+                <td width="40%" height="25">True</td>
+            </tr>
+            </tbody>
+        </table>
+    </p>
+    <img src="images/chp2/2_33.png" style="border:1px solid black;">
+    <p>
+        在Structure窗口中选中QueryRN节点, 右键并选择[New]->[Region Using Wizard]选项, 打开[Create Region]向导对话框. <br />
+        在[Step 1 of 4]画面, [Application Module]下拉框选中我们创建的EmployeeAM, 在[Available View Usages]中选中EmployeeSummaryVO1, <br />
+        点击[下一步]按钮.
+    </p>
+    <img src="images/chp2/2_34.png" style="border:1px solid black;">
+    <p>
+        在[Step 2 of 4]画面: <br />
+        Region ID输入<span class="input">ResultsTable</span>, <br />
+        Region Style选择<span class="input">table</span>, <br />
+        点击[下一步]按钮.
+    </p>
+    <img src="images/chp2/2_35.png" style="border:1px solid black;">
+    <p>
+        在[Step 3 of 4]画面, 选择以下属性: <br />
+        <ul class="itemList">
+            <li>EmployeeId</li>
+            <li>EmployeeName</li>
+            <li>PositionDisplay</li>
+            <li>ManagerName</li>
+        </ul>
+        点击[下一步]按钮.
+    </p>
+    <img src="images/chp2/2_36.png" style="border:1px solid black;">
+    <p>
+        在[Step 4 of 4]画面, 对属性进行如下设定:
+        <table width="80%" border="1" cellpadding="2" cellspacing="2" bordercolor="#cccc99" style="font-size: smaller">
+            <tbody>
+            <tr bgcolor="#cccc99">
+                <td width="17%" height="9">
+                    <p><strong>ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong></p>
+                </td>
+                <td width="11%" height="9"><strong>Prompt</strong></td>
+                <td width="23%" height="9"><strong>Style</strong></td>
+                <td width="17%" height="9"><b>Data Type</b></td>
+                <td width="32%" height="9"><strong>Attribute Set *</strong></td>
+                </tr>
+                <tr valign="top" bgcolor="#f7f7e7">
+                    <td width="17%">EmpNum</td>
+                    <td width="11%">Number</td>
+                    <td width="23%">messageStyledText</td>
+                    <td width="17%">NUMBER</td>
+                    <td width="32%">/oracle/apps/fnd/framework/toolbox/attributesets/FwkTbxEmployees/EmployeeId_Number</td>
+                </tr>
+                <tr valign="top" bgcolor="#f7f7e7">
+                    <td width="17%">EmpName</td>
+                    <td width="11%">Name</td>
+                    <td width="23%">messageStyledText</td>
+                    <td width="17%">VARCHAR2</td>
+                    <td width="32%">/oracle/apps/fnd/framework/toolbox/attributesets/FwkTbxEmployees/FullName</td>
+                </tr>
+                <tr valign="top" bgcolor="#f7f7e7">
+                    <td width="17%">Position</td>
+                    <td width="11%">Position</td>
+                    <td width="23%">messageStyledText</td>
+                    <td width="17%">VARCHAR2</td>
+                    <td width="32%">/oracle/apps/fnd/framework/toolbox/attributesets/FwkTbxEmployees/Position</td>
+                </tr>
+                <tr valign="top" bgcolor="#f7f7e7">
+                    <td width="17%">ManagerName</td>
+                    <td width="11%">Manager</td>
+                    <td width="23%">messageStyledText</td>
+                    <td width="17%">VARCHAR2</td>
+                    <td width="32%">/oracle/apps/fnd/framework/toolbox/attributesets/FwkTbxEmployees/FullName_Manager</td>
+                </tr>
+                </tbody>
+                </table>
+        点击[完成]按钮完成Search Region的创建.
+    </p>
+    <img src="images/chp2/2_37.png" style="border:1px solid black;">
+    <p>
+        在Structure窗口中选中ResultsTable节点, 将其属性进行如下设置:
+        <table width="67%" border="1" cellpadding="2" cellspacing="2" bordercolor="#cccc99">
+            <tbody>
+            <tr bgcolor="#cccc99">
+                <td width="29%"><strong>Property&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</strong></td>
+                <td width="71%"><strong>Value</strong></td>
+            </tr>
+            <tr valign="top" bgcolor="#f7f7e7">
+                <td width="29%">ID</td>
+                <td width="71%">ResultsTable</td>
+            </tr>
+            <tr valign="top" bgcolor="#f7f7e7">
+                <td width="29%">Region Style</td>
+                <td width="71%">table</td>
+            </tr>
+            <tr valign="top" bgcolor="#f7f7e7">
+                <td width="29%">AM Definition</td>
+                <td width="71%"><i>Make absolutely sure that you have not
+                    inadvertently associated an application module here. If you have,
+                    please delete it.</i></td>
+            </tr>
+            <tr valign="top" bgcolor="#f7f7e7">
+                <td width="29%">Additional Text</td>
+                <td width="71%">
+                    <p>Employees Table</p>
+                    <p><em>(This is required per the <a href="../../../../devguide/cs/cs_viewgeneral.htm#508">accessibility coding standards</a>).</em></p>
+                </td>
+            </tr>
+            <tr valign="top" bgcolor="#f7f7e7">
+                <td width="29%">Rendered</td>
+                <td width="71%">True</td>
+            </tr>
+            <tr valign="top" bgcolor="#f7f7e7">
+                <td width="29%">Records Displayed</td>
+                <td width="71%">10</td>
+            </tr>
+            <tr valign="top" bgcolor="#f7f7e7">
+                <td width="29%">Width</td>
+                <td width="71%">100%</td>
+            </tr>
+            <tr valign="top" bgcolor="#f7f7e7">
+                <td width="29%">User Personalization</td>
+                <td width="71%">True <em>(needed so the user can save a
+                    Personalized View)</em></td>
+            </tr>
+            </tbody>
+        </table>
+    </p>
+    <p>
+        在Structure窗口中展开ResultsTable节点, 逐个选中其子节点, 进行如下设置: <br />
+        EmpNum节点:
+        <ul class="itemList">
+            <li>Search Allowed设置为True</li>
+            <li>Sort Allowed设置为ascending</li>
+            <li>Initial Sort Sequence设置为first</li>
+            <li>Selective Search Criteria设置为True</li>
+            <li>User Personalization设置为True</li>
+        </ul>
+        EmpName节点:
+        <ul class="itemList">
+            <li>Search Allowed设置为True</li>
+            <li>Selective Search Criteria设置为True</li>
+            <li>User Personalization设置为True</li>
+        </ul>
+        Position节点:
+        <ul class="itemList">
+            <li>Search Allowed设置为True</li>
+            <li>User Personalization设置为True</li>
+        </ul>
+        ManagerName节点:
+        <ul class="itemList">
+            <li>Search Allowed设置为True</li>
+            <li>Destination设置为mailto:{@ManagerEmail}</li>
+            <li>User Personalization设置为True</li>
+        </ul>
+    </p>
+    <img src="images/chp2/2_38.png" style="border:1px solid black;">
+
+</div>
+<div id="floatPanel">
+    <a href="#step0"><div id="panelTop"></div></a>
+    <a href="index.html"><div id="panelReturn"></div></a>
+</div>
+</body>
+</html>
